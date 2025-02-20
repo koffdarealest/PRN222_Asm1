@@ -1,0 +1,75 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <h3 class="text-center">REGISTER</h3>
+            <form method="post" class="p-4 border rounded shadow">
+                <div class="mb-3">
+                    <label class="form-label">Username</label>
+                    <input type="text" class="form-control" asp-for="Username" required />
+                    <span class="text-danger small" asp-validation-for="Username"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" asp-for="Password" required />
+                    <span class="text-danger small" asp-validation-for="Password"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Re-enter Password</label>
+                    <input type="password" class="form-control" id="repassword" required />
+                    <span class="text-danger small" id="password-error"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Fullname</label>
+                    <input type="text" class="form-control" asp-for="Fullname" required />
+                    <span class="text-danger small" asp-validation-for="Fullname"></span>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Email</label>
+                    <input type="email" class="form-control" asp-for="Email" required />
+                    <span class="text-danger small" asp-validation-for="Email"></span>
+                </div>
+                <button type="submit" id="register-btn" class="btn btn-primary w-100" disabled>Register</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        let password = document.getElementById("password");
+        let repassword = document.getElementById("repassword");
+        let registerBtn = document.getElementById("register-btn");
+        let errorText = document.getElementById("password-error");
+
+        function validatePassword() {
+            if (password.value !== repassword.value) {
+                errorText.textContent = "Mật khẩu nhập lại không khớp!";
+                errorText.style.color = "red";
+                registerBtn.disabled = true;
+            } else {
+                errorText.textContent = "";
+                registerBtn.disabled = false;
+            }
+        }
+
+        password.addEventListener("input", validatePassword);
+        repassword.addEventListener("input", validatePassword);
+    });
+</script>
+

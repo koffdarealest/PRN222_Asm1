@@ -1,0 +1,190 @@
+﻿@using System.Collections
+@using PRN222.Assignment1.Business.DTOs
+@using PRN222.Assignment1.Data.Pagination
+@model PRN222.Assignment1.Data.Pagination.PaginatedList<PRN222.Assignment1.Business.DTOs.EventDto>
+
+@{
+    ViewData["Title"] = "Events";
+    var attendedEvents = (ICollection<EventDto>)ViewData["attendedEvents"];
+    var canAttendEvents = (ICollection<EventDto>)ViewData["canAttendEvents"];
+}
+
+
+@if (User.IsInRole("ADMIN") || !User.Identity.IsAuthenticated)
+{
+    <h1>Event List</h1>
+    @if (User.IsInRole("ADMIN"))
+    {
+        <a href="@Url.Action("Create")" class="btn btn-primary">Create New Event</a>
+    }
+
+    <form method="get" action="@Url.Action("Index")" class="mb-3 mt-3">
+        <div class="row">
+            <div class="col-md-4">
+                <input type="text" name="searchTerm" class="form-control" placeholder="Search by title..." value="@ViewData["searchTerm"]" />
+            </div>
+            <div class="col-md-4">
+                @Html.DropDownList("categoryId", (SelectList)ViewData["CategoryId"], "All Categories", new { @class = "form-control", value = ViewData["selectedCategory"] })
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary">Search</button>
+                <a href="@Url.Action("Index")" class="btn btn-secondary">Reset</a>
+            </div>
+        </div>
+    </form>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Attendees</th>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var eventModel in Model)
+        {
+            <tr data-event-id="@eventModel.EventId">
+                <td>@eventModel.Title</td>
+                <td>@eventModel.Description</td>
+                <td>@eventModel.StartTime</td>
+                <td>@eventModel.EndTime</td>
+                <td>@eventModel.Location</td>
+                <td>@eventModel.Category.CategoryName</td>
+                <td class="attendee-count">@eventModel.Attendees.Count</td>
+                @if (User.IsInRole("ADMIN"))
+                {
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = eventModel.EventId })" class="btn btn-warning">Edit</a>
+                        <a href="@Url.Action("Delete", new { id = eventModel.EventId })" class="btn btn-danger">Delete</a>
+                    </td>
+                }
+                @* @if (User.IsInRole("USER"))
+            {
+                <td>
+                    <a href="@Url.Action("Attend","Event", new { eventid = eventModel.EventId })" class="btn btn-info">Attend</a>
+                </td>
+            } *@
+            </tr>
+        }
+        </tbody>
+    </table>
+    <!-- Hiển thị phân trang -->
+    <div class="pagination">
+        @if (Model.HasPreviousPage)
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Index", new { searchTerm = ViewData["searchTerm"], categoryId = ViewData["selectedCategory"], page = Model.PageIndex - 1 })">Previous</a>
+        }
+
+        <span>Page @Model.PageIndex of @Model.TotalPages</span>
+
+        @if (Model.HasNextPage)
+        {
+            <a class="btn btn-secondary" href="@Url.Action("Index", new { searchTerm = ViewData["searchTerm"], categoryId = ViewData["selectedCategory"], page = Model.PageIndex + 1 })">Next</a>
+        }
+    </div>
+}
+
+@if (User.IsInRole("USER"))
+{
+    <h1>Events You Have Attended</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th >Title</th>
+            <th>Description</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Attendees</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var eventModel in attendedEvents)
+        {
+            <tr data-event-id="@eventModel.EventId">
+                <td class="event-title">@eventModel.Title</td>
+                <td class="event-description">@eventModel.Description</td>
+                <td class="event-start-time">@eventModel.StartTime</td>
+                <td class="event-end-time">@eventModel.EndTime</td>
+                <td class="event-location">@eventModel.Location</td>
+                <td>@eventModel.Category.CategoryName</td>
+                <td class="attendee-count">@eventModel.Attendees.Count</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+
+    <h1 class="mt-5">Events You Can Attend</h1>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Start Time</th>
+            <th>End Time</th>
+            <th>Location</th>
+            <th>Category</th>
+            <th>Actions</th>
+            <th>Attendees</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var eventModel in canAttendEvents)
+        {
+            <tr data-event-id="@eventModel.EventId">
+                <td class="event-title">@eventModel.Title</td>
+                <td class="event-description">@eventModel.Description</td>
+                <td class="event-start-time">@eventModel.StartTime</td>
+                <td class="event-end-time">@eventModel.EndTime</td>
+                <td class="event-location">@eventModel.Location</td>
+                <td>@eventModel.Category.CategoryName</td>
+                <td class="attendee-count">@eventModel.Attendees.Count</td>
+                <td>
+                    <a href="@Url.Action("Attend","Event", new { eventid = eventModel.EventId })" class="btn btn-info">Attend</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+<script>
+    var connection = new signalR.HubConnectionBuilder().withUrl("/eventHub").build();
+    connection.start().catch(err => console.error(err.toString()));
+    connection.on("ReceiveAttendeeCountUpdated", (eventId,count) => {
+        console.log(`Event ${eventId} now has ${count} attendees.`);
+        let eventRow = document.querySelector(`[data-event-id='${eventId}']`);
+        if (eventRow) {
+            let attendeeCountCell = eventRow.querySelector(".attendee-count");
+            if (attendeeCountCell) {
+                attendeeCountCell.innerText = count;
+            }
+        }
+    });
+
+    connection.on("ReceiveEventUpdated", (eventId, title, description, startTime, endTime, location) => {
+        console.log(`Event ${eventId} updated.`);
+
+        let eventRow = document.querySelector(`[data-event-id='${eventId}']`);
+        if (eventRow) {
+            eventRow.querySelector(".event-title").innerText = title;
+            eventRow.querySelector(".event-description").innerText = description;
+            eventRow.querySelector(".event-start-time").innerText = startTime;
+            eventRow.querySelector(".event-end-time").innerText = endTime;
+            eventRow.querySelector(".event-location").innerText = location;
+        }
+    });
+</script>
+
