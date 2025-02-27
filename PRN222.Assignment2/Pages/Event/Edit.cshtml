@@ -1,0 +1,68 @@
+﻿@page
+@model PRN222.Assignment2.Pages.Event.EditModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+}
+
+
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-6">
+            <div class="card shadow-lg border-0 rounded-3">
+                <div class="card-body p-4">
+                    <a asp-page="./Index">← Back</a>
+                    <h3>Create Event</h3>
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="Title">Title</label>
+                            <input type="text" class="form-control" id="Title" value="@Model.EventCreateViewModel.Title" asp-for="@Model.EventCreateViewModel.Title" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="Description">Description</label>
+                            <textarea class="form-control" id="Description" asp-for="@Model.EventCreateViewModel.Description">@Model.EventCreateViewModel.Description</textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="StartTime">Start Time</label>
+                            <input type="datetime-local" class="form-control" id="StartTime"
+                                   value="@Model.EventCreateViewModel.StartTime?.ToString("yyyy-MM-ddTHH:mm")"
+                                   asp-for="@Model.EventCreateViewModel.StartTime" required />
+                            <span class="text-danger small" asp-validation-for="@Model.EventCreateViewModel.StartTime"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="EndTime">End Time</label>
+                            <input type="datetime-local" class="form-control" id="EndTime"
+                                   value="@Model.EventCreateViewModel.EndTime?.ToString("yyyy-MM-ddTHH:mm")"
+                                   asp-for="@Model.EventCreateViewModel.EndTime" />
+                            <span class="text-danger small" asp-validation-for="@Model.EventCreateViewModel.EndTime"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="Location">Location</label>
+                            <input type="text" class="form-control" id="Location" value="@Model.EventCreateViewModel.Location" asp-for="@Model.EventCreateViewModel.Location" />
+                        </div>
+
+                        @* <div class="form-group">
+                        <label for="CategoryId">Category</label>
+                        <select class="form-control" id="CategoryId" name="CategoryId">
+                        @foreach (var category in categories)
+                        {
+                        <option value="@category.Value">@category.Text</option>
+                        }
+                        </select>
+                        </div> *@
+
+                        <div class="form-group">
+                            <label for="CategoryId">Category</label>
+                            @Html.DropDownListFor(model => model.EventCreateViewModel.CategoryId, @Model.EventCategories, "Select Category", new { @class = "form-control" })
+                        </div>
+                        <div class="mt-4 d-flex justify-content-center">
+                            <button type="submit" class="btn btn-primary w-50">Update</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

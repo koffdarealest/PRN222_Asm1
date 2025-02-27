@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN222.Assignment1.Data", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN222.Assignment1.Business", "..\PRN222.Assignment1.Business\PRN222.Assignment1.Business.csproj", "{0187C18E-1742-445A-86AE-A53D4054BBDB}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PRN222.Assignment2", "..\PRN222.Assignment2\PRN222.Assignment2.csproj", "{45EFAA21-DA4C-4DF7-ADF2-27B4FCBEC3EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{0187C18E-1742-445A-86AE-A53D4054BBDB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0187C18E-1742-445A-86AE-A53D4054BBDB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0187C18E-1742-445A-86AE-A53D4054BBDB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45EFAA21-DA4C-4DF7-ADF2-27B4FCBEC3EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45EFAA21-DA4C-4DF7-ADF2-27B4FCBEC3EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45EFAA21-DA4C-4DF7-ADF2-27B4FCBEC3EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45EFAA21-DA4C-4DF7-ADF2-27B4FCBEC3EA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

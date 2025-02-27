@@ -54,3 +54,9 @@ VALUES ('Health & Wellness Expo', 'Explore the latest in health and wellness', '
 
 INSERT INTO Events (Title, Description, StartTime, EndTime, Location, CategoryID) 
 VALUES ('Education Innovation Summit', 'Discussing the future of education', '2025-09-05 09:00:00', '2025-09-05 17:00:00', 'Boston Conference Hall', 4);
+
+--Insert data to User
+--Username: tung
+--Password: aaa
+INSERT INTO Users (Username, [Password], FullName, Email, [Role])
+VALUES ('tung','$2a$11$6QQ2JGR5JwRVixoRZaZrguDEcxEVgYYtkfjeecLTH04Y53zqG63Jq', 'tung', 'dinhsontung153@gmail.com', 'ADMIN')
